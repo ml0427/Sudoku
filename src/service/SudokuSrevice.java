@@ -2,18 +2,23 @@ package service;
 
 public class SudokuSrevice {
 
+	// 數獨大小
+	public final int SUDOKU_SIZE = 9;
+
+	// 預選(可選)字
+	public final String PRESELECTED_STR = "123456789";
+
 	// 空陣列
-	public String[][] sudokuLs = new String[9][9];
+	public String[][] sudokuLs = new String[SUDOKU_SIZE][SUDOKU_SIZE];
 
 	// 答案陣列
-	public String[][] answerSudokuLs = new String[9][9];
+	public String[][] answerSudokuLs = new String[SUDOKU_SIZE][SUDOKU_SIZE];
 
 	// 目前已使用的陣列
-	public String[][] usedSudokuLs = new String[9][9];
+	public String[][] usedSudokuLs = new String[SUDOKU_SIZE][SUDOKU_SIZE];
 
 	// 歷史歷程陣列
-	public String[][] used2SudokuLs = new String[9][9];
-	public final int SUDOKU_SIZE = 9;
+	public String[][] used2SudokuLs = new String[SUDOKU_SIZE][SUDOKU_SIZE];
 
 	/**
 	 * Error check。 若此到最後有任一候選字為"空"，或此位置全部都選擇過則<<復原處理>>
@@ -59,7 +64,7 @@ public class SudokuSrevice {
 
 		for (int i = 0; i < SUDOKU_SIZE; i++) {
 			for (int j = 0; j < SUDOKU_SIZE; j++) {
-				sudokuLs[i][j] = "123456789";
+				sudokuLs[i][j] = PRESELECTED_STR;
 			}
 		}
 	}
