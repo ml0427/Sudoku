@@ -3,17 +3,17 @@ package service;
 public class SudokuSrevice {
 
 	// 空陣列
-	public static String[][] sudokuLs = new String[9][9];
+	public String[][] sudokuLs = new String[9][9];
 
 	// 答案陣列
-	public static String[][] answerSudokuLs = new String[9][9];
+	public String[][] answerSudokuLs = new String[9][9];
 
 	// 目前已使用的陣列
-	public static String[][] usedSudokuLs = new String[9][9];
+	public String[][] usedSudokuLs = new String[9][9];
 
 	// 歷史歷程陣列
-	public static String[][] used2SudokuLs = new String[9][9];
-	public final static int SUDOKU_SIZE = 9;
+	public String[][] used2SudokuLs = new String[9][9];
+	public final int SUDOKU_SIZE = 9;
 
 	/**
 	 * Error check。 若此到最後有任一候選字為"空"，或此位置全部都選擇過則<<復原處理>>
@@ -22,7 +22,7 @@ public class SudokuSrevice {
 	 * @param x
 	 * @return 可選數字
 	 */
-	public static String checkIsError(int y, int x) {
+	public String checkIsError(int y, int x) {
 
 		for (int j = y; j < SUDOKU_SIZE; j++) {
 			for (int i = x; i < SUDOKU_SIZE; i++) {
@@ -55,7 +55,7 @@ public class SudokuSrevice {
 	/**
 	 * 寫入『候選字』
 	 */
-	public static void writeSudokuLs() {
+	public void writeSudokuLs() {
 
 		for (int i = 0; i < SUDOKU_SIZE; i++) {
 			for (int j = 0; j < SUDOKU_SIZE; j++) {
@@ -71,7 +71,7 @@ public class SudokuSrevice {
 	 * @param x
 	 * @param nb
 	 */
-	public static void usedSudokuLs(int y, int x, String nb) {
+	public void usedSudokuLs(int y, int x, String nb) {
 
 		if (usedSudokuLs[y][x] == null) {
 			usedSudokuLs[y][x] = nb;
@@ -94,7 +94,7 @@ public class SudokuSrevice {
 	 * @param x
 	 * @param nb
 	 */
-	public static void answerSudokuLs(int y, int x, String nb) {
+	public void answerSudokuLs(int y, int x, String nb) {
 
 		answerSudokuLs[y][x] = nb;
 	}
@@ -106,7 +106,7 @@ public class SudokuSrevice {
 	 * @param x
 	 * @param nb
 	 */
-	public static void allRecovery(int y, int x) {
+	public void allRecovery(int y, int x) {
 
 		xRecovery(y, x, answerSudokuLs[y][x]);
 		// printSudokuAllLs();
@@ -125,7 +125,7 @@ public class SudokuSrevice {
 	 * @param nb
 	 * @return
 	 */
-	public static boolean isValueByCrossCheck(int y, int x, String nb) {
+	public boolean isValueByCrossCheck(int y, int x, String nb) {
 
 		// 水平確認
 		for (int j = 0; j < SUDOKU_SIZE; j++) {
@@ -149,7 +149,7 @@ public class SudokuSrevice {
 	 * @param x
 	 * @param nb
 	 */
-	public static void xRecovery(int y, int x, String nb) {
+	public void xRecovery(int y, int x, String nb) {
 
 		boolean isSame = false;
 		for (int j = 0; j < SUDOKU_SIZE; j++) {
@@ -179,7 +179,7 @@ public class SudokuSrevice {
 	 * @param x
 	 * @param nb
 	 */
-	public static void yRecovery(int y, int x, String nb) {
+	public void yRecovery(int y, int x, String nb) {
 
 		for (int i = y; i < SUDOKU_SIZE; i++) {
 			sudokuLs[i][x] = sudokuLs[i][x] + nb;
@@ -194,7 +194,7 @@ public class SudokuSrevice {
 	 * @param x
 	 * @param nb
 	 */
-	public static void zRecovery(int y, int x, String nb) {
+	public void zRecovery(int y, int x, String nb) {
 
 		int xStart, xEnd, yEnd;
 		if (x <= 2) {
@@ -234,7 +234,7 @@ public class SudokuSrevice {
 	 * @param x
 	 * @param nb
 	 */
-	public static void allRemove(int y, int x, String nb) {
+	public void allRemove(int y, int x, String nb) {
 
 		xRemove(y, x, nb);
 		yRemove(y, x, nb);
@@ -249,7 +249,7 @@ public class SudokuSrevice {
 	 * @param y
 	 * @param nb
 	 */
-	public static void xRemove(int y, int x, String nb) {
+	public void xRemove(int y, int x, String nb) {
 
 		for (int j = 0; j < SUDOKU_SIZE; j++) {
 			sudokuLs[y][j] = sudokuLs[y][j].replace(nb, "");
@@ -264,7 +264,7 @@ public class SudokuSrevice {
 	 * @param x
 	 * @param nb
 	 */
-	public static void yRemove(int y, int x, String nb) {
+	public void yRemove(int y, int x, String nb) {
 
 		for (int i = 0; i < SUDOKU_SIZE; i++) {
 			sudokuLs[i][x] = sudokuLs[i][x].replace(nb, "");
@@ -279,7 +279,7 @@ public class SudokuSrevice {
 	 * @param x
 	 * @param nb
 	 */
-	public static void zRemove(int y, int x, String nb) {
+	public void zRemove(int y, int x, String nb) {
 		int xStart, xEnd, yStart, yEnd;
 		if (x <= 2) {
 			xStart = 0;
@@ -316,17 +316,17 @@ public class SudokuSrevice {
 	 * @param StopTime
 	 * @param StartTime
 	 */
-	public static void printCreationHistoryRecord(Long StopTime, Long StartTime) {
+	public void printCreationHistoryRecord(Long StopTime, Long StartTime) {
 
 		String UseTime = (StopTime - StartTime) + "";
 		System.out.println("用時：" + UseTime + "毫秒\r\n");
 		System.out.println("~~~~~~~~~~~創建歷程紀錄~~~~~~~~~~~~~");
-		for (int i = 0; i < SudokuSrevice.SUDOKU_SIZE; i++) {
-			for (int j = 0; j < SudokuSrevice.SUDOKU_SIZE; j++) {
+		for (int i = 0; i < SUDOKU_SIZE; i++) {
+			for (int j = 0; j < SUDOKU_SIZE; j++) {
 				if (j == 2 || j == 5) {
-					System.out.print("(" + SudokuSrevice.used2SudokuLs[i][j] + ")" + " | ");
+					System.out.print("(" + used2SudokuLs[i][j] + ")" + " | ");
 				} else {
-					System.out.print("(" + SudokuSrevice.used2SudokuLs[i][j] + ")");
+					System.out.print("(" + used2SudokuLs[i][j] + ")");
 				}
 			}
 			System.out.println();
@@ -339,7 +339,7 @@ public class SudokuSrevice {
 	/**
 	 * 印出結果
 	 */
-	public static void printSudokuAllLs() {
+	public void printSudokuAllLs() {
 
 		// System.out.println("~~~~~~~~~~~~SUDOKU_SIZE~~~~~~~~~~~~");
 		// for (int i = 0; i < SUDOKU_SIZE; i++) {
