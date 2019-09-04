@@ -5,14 +5,13 @@ import service.SudokuSrevice;
 public class Sudoku {
 
 	public static void main(String[] args) {
-		
+
 		SudokuSrevice sudokuSrevice = new SudokuSrevice();
-		
-		Long StartTime = System.currentTimeMillis();
+
+		Long startTime = System.currentTimeMillis();
 		sudokuSrevice.writeSudokuLs();
 		for (int j = 0; j < sudokuSrevice.SUDOKU_SIZE; j++) {
 			for (int i = 0; i < sudokuSrevice.SUDOKU_SIZE; i++) {
-				// System.out.println("現在位置Y軸：" + j + "，X軸：" + i);
 				// 可選數字
 				String optional = sudokuSrevice.checkIsError(j, i);
 				if ("".equals(optional)) {
@@ -26,7 +25,6 @@ public class Sudoku {
 					sudokuSrevice.allRecovery(j, i);
 					i--;
 					// System.out.println("<<< 復原處理 END >>>");
-					// printSudokuAllLs();
 				} else {
 					// 選擇數字
 					int randomNb = (int) (Math.random() * optional.length());
@@ -41,11 +39,12 @@ public class Sudoku {
 				}
 			}
 		}
-		sudokuSrevice.printSudokuAllLs();
-		Long StopTime = System.currentTimeMillis();
+		Long stopTime = System.currentTimeMillis();
 
-		sudokuSrevice.printCreationHistoryRecord(StopTime, StartTime);
-
+		// sudokuSrevice.printSudokuAllLs();
+		// sudokuSrevice.randomDiggingHoles();
+		sudokuSrevice.printSudokuAllLs(stopTime, startTime);
+		sudokuSrevice.printCreationHistoryRecord();
 	}
 
 }

@@ -2,26 +2,80 @@ package service;
 
 public class SudokuSrevice {
 
-	// 數獨大小
-	public final int SUDOKU_SIZE = 9;
-
-	// 預選(可選)字
-	public final String PRESELECTED_STR = "123456789";
-
-	// 空陣列
-	public String[][] sudokuLs = new String[SUDOKU_SIZE][SUDOKU_SIZE];
-
-	// 答案陣列
-	public String[][] answerSudokuLs = new String[SUDOKU_SIZE][SUDOKU_SIZE];
-
-	// 目前已使用的陣列
-	public String[][] usedSudokuLs = new String[SUDOKU_SIZE][SUDOKU_SIZE];
-
-	// 歷史歷程陣列
-	public String[][] used2SudokuLs = new String[SUDOKU_SIZE][SUDOKU_SIZE];
+	// /**
+	// * 難度 1:困難 2:中等 3:簡單
+	// */
+	// public final int DEGREE = 1;
 
 	/**
-	 * Error check。 若此到最後有任一候選字為"空"，或此位置全部都選擇過則<<復原處理>>
+	 * 數獨大小
+	 */
+	public final int SUDOKU_SIZE = 9;
+
+	/**
+	 * 預選(可選)字
+	 */
+	public final String PRESELECTED_STR = "123456789";
+
+	/**
+	 * 陣列
+	 */
+	public String[][] sudokuLs = newSudokuLs();
+
+	/**
+	 * 答案陣列
+	 */
+	public String[][] answerSudokuLs = newSudokuLs();
+
+	/**
+	 * 目前已使用的陣列
+	 */
+	public String[][] usedSudokuLs = newSudokuLs();
+
+	/**
+	 * 歷史歷程陣列
+	 */
+	public String[][] courseSudokuLs = newSudokuLs();
+
+	// /**
+	// * 隨機挖洞
+	// */
+	// public void randomDiggingHoles() {
+	//
+	// int diggingHolesNumber = 40;
+	// switch (DEGREE) {
+	// case 1:
+	// diggingHolesNumber = 60;
+	// break;
+	// case 2:
+	// diggingHolesNumber = 50;
+	// break;
+	// }
+	//
+	// Set<Integer> randomNbLs = new HashSet<Integer>();
+	// while (randomNbLs.size() < diggingHolesNumber) {
+	// int randomX = (int) Math.floor(Math.random() * (9));
+	// int randomY = (int) Math.floor(Math.random() * (9));
+	// randomNbLs.add(10 * randomX + randomY);
+	// }
+	// randomNbLs.forEach(randomNb -> {
+	// int x = randomNb / 10;
+	// int y = randomNb % 10;
+	// answerSudokuLs[y][x] = " ";
+	// });
+	// }
+
+	/**
+	 * 新陣列
+	 * 
+	 * @return
+	 */
+	public String[][] newSudokuLs() {
+		return new String[SUDOKU_SIZE][SUDOKU_SIZE];
+	}
+
+	/**
+	 * Error check。 若此到最後有任一候選字為"空"，或此位置全部都選擇過，則<<復原處理>>
 	 * 
 	 * @param y
 	 * @param x
@@ -85,10 +139,12 @@ public class SudokuSrevice {
 				usedSudokuLs[y][x] = usedSudokuLs[y][x] + nb;
 			}
 		}
-		if (used2SudokuLs[y][x] == null) {
-			used2SudokuLs[y][x] = nb;
+
+		// 記錄歷程
+		if (courseSudokuLs[y][x] == null) {
+			courseSudokuLs[y][x] = nb;
 		} else {
-			used2SudokuLs[y][x] = used2SudokuLs[y][x] + nb;
+			courseSudokuLs[y][x] = courseSudokuLs[y][x] + nb;
 		}
 	}
 
@@ -114,11 +170,8 @@ public class SudokuSrevice {
 	public void allRecovery(int y, int x) {
 
 		xRecovery(y, x, answerSudokuLs[y][x]);
-		// printSudokuAllLs();
 		yRecovery(y, x, answerSudokuLs[y][x]);
-		// printSudokuAllLs();
 		zRecovery(y, x, answerSudokuLs[y][x]);
-		// printSudokuAllLs();
 		answerSudokuLs[y][x] = null;
 	}
 
@@ -160,7 +213,6 @@ public class SudokuSrevice {
 		for (int j = 0; j < SUDOKU_SIZE; j++) {
 			for (int i = 0; i < SUDOKU_SIZE; i++) {
 				// 指定目前位置
-				// System.out.println(">>>" + answerSudokuLs[i][j]);
 				if (nb.equals(answerSudokuLs[i][j])) {
 					isSame = true;
 					break;
@@ -171,10 +223,7 @@ public class SudokuSrevice {
 			if (!isSame)
 				sudokuLs[y][j] = sudokuLs[y][j] + nb;
 			isSame = false;
-			// }
-
 		}
-
 	}
 
 	/**
@@ -189,7 +238,6 @@ public class SudokuSrevice {
 		for (int i = y; i < SUDOKU_SIZE; i++) {
 			sudokuLs[i][x] = sudokuLs[i][x] + nb;
 		}
-
 	}
 
 	/**
@@ -223,7 +271,6 @@ public class SudokuSrevice {
 		for (int i = y + 1; i <= yEnd; i++) {
 			for (int j = xStart; j <= xEnd; j++) {
 				if (j != x) {
-					// System.out.println(">>>" + sudokuLs[i][j]);
 					if (!isValueByCrossCheck(i, j, nb)) {
 						sudokuLs[i][j] = sudokuLs[i][j] + nb;
 					}
@@ -244,7 +291,6 @@ public class SudokuSrevice {
 		xRemove(y, x, nb);
 		yRemove(y, x, nb);
 		zRemove(y, x, nb);
-
 	}
 
 	/**
@@ -259,7 +305,6 @@ public class SudokuSrevice {
 		for (int j = 0; j < SUDOKU_SIZE; j++) {
 			sudokuLs[y][j] = sudokuLs[y][j].replace(nb, "");
 		}
-
 	}
 
 	/**
@@ -274,7 +319,6 @@ public class SudokuSrevice {
 		for (int i = 0; i < SUDOKU_SIZE; i++) {
 			sudokuLs[i][x] = sudokuLs[i][x].replace(nb, "");
 		}
-
 	}
 
 	/**
@@ -312,7 +356,6 @@ public class SudokuSrevice {
 				sudokuLs[i][j] = sudokuLs[i][j].replace(nb, "");
 			}
 		}
-
 	}
 
 	/**
@@ -321,17 +364,15 @@ public class SudokuSrevice {
 	 * @param StopTime
 	 * @param StartTime
 	 */
-	public void printCreationHistoryRecord(Long StopTime, Long StartTime) {
+	public void printCreationHistoryRecord() {
 
-		String UseTime = (StopTime - StartTime) + "";
-		System.out.println("用時：" + UseTime + "毫秒\r\n");
 		System.out.println("~~~~~~~~~~~創建歷程紀錄~~~~~~~~~~~~~");
 		for (int i = 0; i < SUDOKU_SIZE; i++) {
 			for (int j = 0; j < SUDOKU_SIZE; j++) {
 				if (j == 2 || j == 5) {
-					System.out.print("(" + used2SudokuLs[i][j] + ")" + " | ");
+					System.out.print("(" + courseSudokuLs[i][j] + ")" + " | ");
 				} else {
-					System.out.print("(" + used2SudokuLs[i][j] + ")");
+					System.out.print("(" + courseSudokuLs[i][j] + ")");
 				}
 			}
 			System.out.println();
@@ -345,6 +386,14 @@ public class SudokuSrevice {
 	 * 印出結果
 	 */
 	public void printSudokuAllLs() {
+
+		printSudokuAllLs(0, 0);
+	}
+
+	/**
+	 * 印出結果
+	 */
+	public void printSudokuAllLs(long stopTime, long startTime) {
 
 		// System.out.println("~~~~~~~~~~~~SUDOKU_SIZE~~~~~~~~~~~~");
 		// for (int i = 0; i < SUDOKU_SIZE; i++) {
@@ -372,7 +421,7 @@ public class SudokuSrevice {
 		for (int i = 0; i < SUDOKU_SIZE; i++) {
 			for (int j = 0; j < SUDOKU_SIZE; j++) {
 				if (j == 2 || j == 5) {
-					System.out.print(answerSudokuLs[i][j] + " | ");
+					System.out.print(answerSudokuLs[i][j] + "|");
 				} else {
 					System.out.print(answerSudokuLs[i][j]);
 				}
@@ -381,6 +430,11 @@ public class SudokuSrevice {
 			if (i == 2 || i == 5) {
 				System.out.println("---------------");
 			}
+		}
+
+		if (stopTime != 0 && startTime != 0) {
+			String useTime = (stopTime - startTime) + "";
+			System.out.println("\n用時：" + useTime + "毫秒");
 		}
 	}
 
